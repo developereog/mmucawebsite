@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Calendar</title>
+    <style>
+        /* Your CSS styles for the calendar can go here */
+        /* For demonstration purposes, I'll add a basic styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h2>Automatic Calendar</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Sunday</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- JavaScript will populate the calendar here -->
+        </tbody>
+    </table>
+
+    <script>
+        // JavaScript for populating the calendar goes here
+        // For demonstration purposes, I'll add a simple example
+        const tbody = document.querySelector('tbody');
+        const today = new Date();
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+
+        // Function to get the number of days in a month
+        function daysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        // Populate the calendar with dates
+        function populateCalendar(month, year) {
+            tbody.innerHTML = '';
+
+            // Get the first day of the month
+            const firstDay = new Date(year, month, 1).getDay();
+
+            // Create a new row
+            let row = document.createElement('tr');
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay; i++) {
+                let cell = document.createElement('td');
+                row.appendChild(cell);
+            }
+
+            // Populate the rest of the cells with dates
+            for (let i = 1; i <= daysInMonth(month, year); i++) {
+                let cell = document.createElement('td');
+                cell.textContent = i;
+                row.appendChild(cell);
+
+                // Start a new row for each week (7 days)
+                if (row.children.length === 7) {
+                    tbody.appendChild(row);
+                    row = document.createElement('tr');
+                }
+            }
+
+            // Add the last row to the table
+            tbody.appendChild(row);
+        }
+
+        // Call the function to populate the calendar
+        populateCalendar(currentMonth, currentYear);
+    </script>
+</body>
+</html>

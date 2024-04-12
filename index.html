@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>St. Don Bosco MMUCA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Add styles for the calendar */
+        #calendar-container {
+            margin-top: 20px;
+            text-align: center;
+            font-family: 'Roboto', sans-serif; /* Apply stylish font */
+            background-color: #2ff008;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(148, 17, 17, 0.897);
+            padding: 20px;
+        }
+
+        .calendar-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .calendar-table th,
+        .calendar-table td {
+            border: 2px solid #1607e7;
+            padding: 10px;
+        }
+
+        .calendar-table th {
+            background-color: #007bff; /* Blue header */
+            color: #fff; /* White text */
+        }
+
+        .calendar-table td {
+            text-align: center;
+            cursor: pointer; /* Change cursor to pointer */
+        }
+
+        .month-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #007bff; /* Blue color */
+        }
+
+        .nav-buttons {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .nav-buttons button {
+            margin: 0 10px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif; /* Apply stylish font */
+        }
+
+        .nav-buttons button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .has-activity {
+            background-color: #f0ad4e; /* Orange background for days with activities */
+            color: #fff; /* White text color */
+            font-weight: bold; /* Bold text for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <i class="fas fa-church logo"></i>
+            <h1>ST. DON BOSCO MMUCA CHAPEL</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="jumuiyas.html"><i class="fas fa-hands"></i> Jumuiyas</a></li>
+                    <li><a href="sermons.html"><i class="fas fa-church"></i> Sermons</a></li>
+                    <li><a href="events.html"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="patronsaint.html"><i class="fas fa-praying-hands"></i> Patron Saint</a></li>
+                </ul>
+            </nav>
+            <!-- Add the toggle button here -->
+            <button class="toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- End of toggle button -->
+        </div>
+    </header>
+
+    <section id="home" class="active">
+        <div class="container">
+            <div class="home-content">
+                <h2><i class="fas fa-cross"></i> Welcome to our Chaplain website</h2>
+                <p>"Do everything for the glory of God.- St. Don Bosco" <br> Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, <br>and he will make your paths straight." <br>- Proverbs 3:5-6 -</p>
+                <a href="about.html"><button>Learn More</button></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Automatic Calendar Section -->
+    <section id="calendar">
+        <div class="container">
+            <h2 class="month-name">Activity Calendar</h2>
+            <p>Here, find the semestral activities, check and get updated for the<br>activities of the church <br> Major activities are highlighted in the calendar</p>
+            <div id="calendar-container">
+                <!-- Calendar table will be dynamically generated here -->
+            </div>
+            <div class="nav-buttons">
+                <button id="prev-month">Previous Month</button>
+                <button id="next-month">Next Month</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 MMUCA <br>Developed by ManuDesigns Contact address:otienoemmanuel683@gmail.com</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const calendarContainer = document.getElementById("calendar-container");
+            const navButtons = document.querySelectorAll('.nav-buttons button');
+            const currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = 2024;
+
+            // Define activities for each date (sample data)
+            const activities = {
+                '2024-04-01': 'Church Service',
+                '2024-04-05': 'Bible Study',
+                '2024-04-08': 'St. John Bosco Feast',
+                '2024-04-10': 'Youth Meeting',
+                '2024-04-15': 'Community Outreach, Service day',
+                // Add more activities as needed
+            };
+
+            renderCalendar(currentYear, currentMonth);
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.id === 'prev-month') {
+                        currentMonth -= 1;
+                        if (currentMonth < 0) {
+                            currentMonth = 11;
+                            currentYear -= 1;
+                        }
+                    } else {
+                        currentMonth += 1;
+                        if (currentMonth > 11) {
+                            currentMonth = 0;
+                            currentYear += 1;
+                        }
+                    }
+                    renderCalendar(currentYear, currentMonth);
+                });
+            });
+
+            function renderCalendar(year, month) {
+                calendarContainer.innerHTML = ''; // Clear the previous calendar
+
+                const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const numWeeks = Math.ceil((firstDayOfMonth + daysInMonth) / 7);
+                const table = document.createElement('table');
+                table.classList.add('calendar-table');
+
+                // Create the table header with month name
+                const header = table.createTHead();
+                const headerRow = header.insertRow();
+                const headerCell = headerRow.insertCell();
+                headerCell.colSpan = 7;
+                headerCell.textContent = monthName + ' ' + year;
+                headerCell.classList.add('month-name');
+
+                // Create the table body
+                const body = table.createTBody();
+
+                // Create the table rows and cells
+                let dayCounter = 1;
+                for (let i = 0; i < numWeeks; i++) {
+                    const row = body.insertRow();
+                    for (let j = 0; j < 7; j++) {
+                        const cell = row.insertCell();
+                        if (i === 0 && j < firstDayOfMonth) {
+                            // Empty cells before the first day of the month
+                            cell.textContent = '';
+                        } else if (dayCounter <= daysInMonth) {
+                            // Fill in the days of the month
+                            const date = new Date(year, month, dayCounter);
+                            const formattedDate = formatDate(date);
+                            cell.textContent = dayCounter;
+                            cell.dataset.date = formattedDate;
+                            if (activities[formattedDate]) {
+                                cell.classList.add('has-activity');
+                            }
+                            dayCounter++;
+                        }
+                    }
+                }
+
+                table.addEventListener('click', function(e) {
+                    const target = e.target;
+                    if (target.tagName === 'TD' && target.dataset.date) {
+                        const date = target.dataset.date;
+                        const activity = activities[date];
+                        if (activity) {
+                            alert(`Activities for ${date}:\n${activity}`);
+                        } else {
+                            alert(`No activities planned for ${date}`);
+                        }
+                    }
+                });
+
+                calendarContainer.appendChild(table);
+            }
+
+            function formatDate(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+        });
+    </script>
+</body>
+</html>
